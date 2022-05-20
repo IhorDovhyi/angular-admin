@@ -10,6 +10,9 @@ import { TogglerComponent } from './toggler.component';
   ],
   imports: [
     CommonModule
+  ],
+  exports:[
+    TogglerComponent
   ]
 })
 export class TogglerModule { }
