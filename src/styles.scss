@@ -3,3 +3,6 @@
 @import "src/assets/styles/mixins";
 @import "src/assets/styles/tables";
 @import "src/assets/styles/variables";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
