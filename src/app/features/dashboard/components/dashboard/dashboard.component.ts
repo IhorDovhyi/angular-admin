@@ -1,7 +1,9 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
 import {ChartConfiguration, ChartType} from "chart.js";
 import {viewsDataMock} from "../../../../../../testing/viewsDataMock";
+import {UsersService} from "../../../../shared/services/users.service";
+import {IUser} from "../../../../shared/interfaces/user.interface";
 
 @Component({
   selector: 'app-dashboard',
@@ -9,9 +11,12 @@ import {viewsDataMock} from "../../../../../../testing/viewsDataMock";
   styleUrls: ['./dashboard.component.scss'],
 })
 
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  currentUser: IUser = {} as IUser;
 
   disableRecolor!: boolean;
+
+  showMessage = false;
 
   public lineChartData: any = {
     datasets: [
@@ -27,7 +32,7 @@ export class DashboardComponent {
         fill: 'origin',
       },
     ],
-    labels: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   };
 
   public lineChartOptions: ChartConfiguration['options'] = {
@@ -53,13 +58,32 @@ export class DashboardComponent {
       }
     },
     plugins: {
-      legend: { display: true },
+      legend: {display: true},
     }
   };
 
   public lineChartType: ChartType = 'line';
 
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+
+  constructor(
+    private usersService: UsersService
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.usersService.currentUser
+      .subscribe((user: IUser) => {
+        if (user?.name) {
+          this.showMessage = true;
+          this.currentUser = user;
+
+          setTimeout(() => {
+            this.showMessage = false;
+          }, 3000);
+        }
+      });
+  }
 
   randomize(): void {
     for (let i = 0; i < this.lineChartData.datasets.length; i++) {
@@ -76,6 +100,11 @@ export class DashboardComponent {
     this.disableRecolor = true;
 
     this.chart?.update();
+  }
+
+  private updateCurrentDate(callback: any): void {
+    const date = new Date();
+    callback(date);
   }
 
   private static generateNumber(i: number): number {
