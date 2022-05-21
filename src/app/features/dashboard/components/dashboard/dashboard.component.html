@@ -1,1 +1,12 @@
-<p>dashboard works!</p>
+{{currentDate}}
+<br><br>
+<p>Initial array: <ng-container *ngFor="let item of fruits">{{item}}, </ng-container></p>
+<p>First copy array: <ng-container *ngFor="let item of fruitsFirstCopy">{{item}}, </ng-container></p>
+<p>Second copy array: <ng-container *ngFor="let item of fruitsSecondCopy">{{item}}, </ng-container></p>
+<p>With number 1: <ng-container *ngFor="let item of withNumber1">{{item}}, </ng-container></p>
+<p>After replace: <ng-container *ngFor="let item of afterReplace">{{item}}, </ng-container></p>
+<p>Includes symbol 'a': <ng-container *ngFor="let item of includesSymbolA">
+  <span [ngClass]="{red: !item}">{{item}}, </span>
+</ng-container></p>
+<p>Every string has > 5 letters: <span [ngClass]="{red: !isEveryLengthMoreFive}">{{isEveryLengthMoreFive}}</span></p>
+<p>Any of items is string?: <span [ngClass]="{red: !isAnyString}">{{isAnyString}}</span></p>
