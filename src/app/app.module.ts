@@ -1,25 +1,52 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
-import {DashboardComponent} from "../../src/app/features/dashboard/components/dashboard/dashboard.component";
-import { NgChartsModule } from 'ng2-charts';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {CommonModule} from "@angular/common";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {DashboardComponent} from "./features/dashboard/dashboard.component";
+import {NgChartsModule} from 'ng2-charts';
 import {MaterialModule} from "./material/material.module";
+import {AuthModule} from "./features/auth/auth.module";
+import {HttpClientModule} from "@angular/common/http";
+import {AccordionDirective} from './shared/directives/accordion.directive';
+import {InputControlAccessorDirective} from "./shared/directives/input-control-accessor.directive";
+import {HeaderModule} from "./shared/components/header/header.module";
+import {NavigationModule} from "./shared/components/navigation/navigation.module";
+import {FooterModule} from "./shared/components/footer/footer.module";
+import {VisitorsChartComponent} from './features/dashboard/components/visitors-chart/visitors-chart.component';
+import {UsersTableModule} from "./shared/components/users-table/users-table.module";
+import {SettingsWidgetComponent} from './features/dashboard/components/settings-widget/settings-widget.component';
+import {TogglerModule} from "./shared/components/toggler/toggler.module";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    AccordionDirective,
+    InputControlAccessorDirective,
+    VisitorsChartComponent,
+    SettingsWidgetComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    BrowserAnimationsModule,
     MaterialModule,
-    NgChartsModule
+    NgChartsModule,
+    AuthModule,
+    HttpClientModule,
+    HeaderModule,
+    NavigationModule,
+    FooterModule,
+    UsersTableModule,
+    TogglerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

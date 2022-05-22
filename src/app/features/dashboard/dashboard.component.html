@@ -1,0 +1,45 @@
+<div class="grid-50">
+  <div class="grid-item">
+    <div class="tile mr-2 mb-4">
+      <div class="tile-header">
+        Visitors
+      </div>
+      <div class="tile-body">
+        <app-visitors-chart [lineChartData]="lineChartData"
+                            [lineChartOptions]="lineChartOptions"
+                            [lineChartType]="lineChartType"
+        ></app-visitors-chart>
+      </div>
+    </div>
+  </div>
+  <div class="grid-item">
+    <div class="tile ml-2 mb-4">
+      <div class="tile-header">
+        Recent users
+      </div>
+      <div class="tile-body">
+        <app-users-table [usersList]="users" [isWidget]="true"></app-users-table>
+      </div>
+    </div>
+  </div>
+  <div class="grid-item">
+    <div class="tile mr-2">
+      <div class="tile-header">
+        Settings
+      </div>
+      <div class="tile-body">
+        <app-settings-widget></app-settings-widget>
+      </div>
+    </div>
+  </div>
+  <div class="grid-item">
+    <div class="tile ml-2">
+      <div appAccordion [opened]="true" class="tile-header accordion-anchor">
+        Last transactions
+      </div>
+      <div class="tile-body accordion-content">
+        <app-users-table [usersList]="users" [isWidget]="true"></app-users-table>
+      </div>
+    </div>
+  </div>
+</div>

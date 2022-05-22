@@ -1,9 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
+import {DatePipe} from "@angular/common";
+import {IUser} from "../../shared/interfaces/user.interface";
+import {ITransaction} from "../../shared/interfaces/transaction.interface";
 import {BaseChartDirective} from "ng2-charts";
 import {ChartConfiguration, ChartType} from "chart.js";
-import {viewsDataMock} from "../../../../../../testing/viewsDataMock";
-import {UsersService} from "../../../../shared/services/users.service";
-import {IUser} from "../../../../shared/interfaces/user.interface";
+import {viewsDataMock} from "../../../../testing/viewsDataMock";
+import {UsersService} from "../../shared/services/users.service";
+import {AuthService} from "../auth/services/auth.service";
+import {usersDataMock} from "../../../../testing/usersDataMock";
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +16,28 @@ import {IUser} from "../../../../shared/interfaces/user.interface";
 })
 
 export class DashboardComponent implements OnInit {
+  currentDate!: string;
   currentUser: IUser = {} as IUser;
+
+  users: IUser[] = [];
+
+  today: Date = new Date();
+
+  transactions: ITransaction[] = [];
+
+  days: string[] = [
+    'Yesterday',
+    'Today',
+    'Tomorrow',
+  ];
+
+  daysCopyOne: string[] = [];
+  daysCopyTwo: string[] = [];
+
+  includesSymbolW: boolean[] = [];
+  isEveryLengthMoreFive!: boolean;
+  isAnyString!: boolean;
+  isAnyNumber!: boolean;
 
   disableRecolor!: boolean;
 
@@ -42,6 +67,7 @@ export class DashboardComponent implements OnInit {
       },
     },
     scales: {
+
       x: {},
       'y-axis-0':
         {
@@ -67,11 +93,30 @@ export class DashboardComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   constructor(
-    private usersService: UsersService
+    private datePipe: DatePipe,
+    private authService: AuthService,
+    private usersService: UsersService,
   ) {
   }
 
   ngOnInit(): void {
+    this.users = usersDataMock;
+
+    this.updateCurrentDate(this.getFormattedDate);
+    this.updateUser();
+
+    this.daysCopyOne = this.days;
+    this.daysCopyTwo = [...this.days];
+
+    this.days[0] = 'One year ago';
+
+    this.includesSymbolW = this.days.map(el => el.includes('w'));
+    this.isEveryLengthMoreFive = this.days.every(el => el.length > 5);
+    this.isAnyString = this.days.some(el => typeof el === 'string');
+    this.isAnyNumber = this.days.some(el => typeof el === 'number');
+    this.days.forEach(el => el + '1');
+    this.days = this.days.map(el => el.replace('To', ' ').trim());
+
     this.usersService.currentUser
       .subscribe((user: IUser) => {
         if (user?.name) {
@@ -83,6 +128,10 @@ export class DashboardComponent implements OnInit {
           }, 3000);
         }
       });
+  }
+
+  getFormattedDate = (date: Date): void => {
+    this.currentDate = `Current date: ${this.datePipe.transform(date, 'MM.dd.yyyy hh:mm a')}`;
   }
 
   randomize(): void {
@@ -105,6 +154,17 @@ export class DashboardComponent implements OnInit {
   private updateCurrentDate(callback: any): void {
     const date = new Date();
     callback(date);
+  }
+
+  private updateUser(date: Date = new Date(), active = false): void {
+    this.currentUser = {
+      id: -1,
+      name: 'New user',
+      email: 'test@mail.com',
+      updatedAt: date.toISOString(),
+      transactions: [...this.transactions],
+      active,
+    }
   }
 
   private static generateNumber(i: number): number {
